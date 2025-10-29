@@ -94,4 +94,172 @@ describe('로또 테스트', () => {
   test('예외 테스트', async () => {
     await runException('1000j');
   });
+
+  test('예외 테스트2 - 구입 금액에 숫자가 아닌 값이 들어오면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['abcd']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트3 - 구입 금액이 0이면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['0']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트4 - 구입 금액이 음수이면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['-1000']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트5 - 구입 금액이 1000원 단위로 나누어 떨어지지 않으면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1234']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트6 - 당첨 번호가 6개를 초과하면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5,6,7']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트7 - 당첨 번호가 6개 미만이면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트8 - 당첨 번호에 숫자가 아닌 값이 들어오면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,a,@,2,3,4']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트9 - 당첨 번호에 0이 들어오면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '0,3,4,5,6,7']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트10 - 당첨 번호에 음수가 들어오면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '-1,3,4,5,6,7']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트11 - 당첨 번호에 유리수가 들어오면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5,20.5']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트12 - 당첨 번호에 중복된 값이 존재하면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,1,1,2,3,4']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트13 - 보너스 번호가 숫자가 아니면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5,6', 'a']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트14 - 보너스 번호가 1~45사이 정수가 아니면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5,6', '-1']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
+
+  test('예외 테스트15 - 보너스 번호가 당첨 번호와 중복되면 예외가 발생한다.', async () => {
+    // given
+    mockQuestions(['1000', '1,2,3,4,5,6', '3']);
+
+    // when
+    const app = new App();
+    await app.run();
+
+    // then
+    await expect(app.run()).rejects.toThrow('[ERROR]');
+  });
 });
