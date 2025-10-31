@@ -1,5 +1,6 @@
 import { Console, Random } from '@woowacourse/mission-utils';
 import Lotto from './Lotto.js';
+import LottoResult from './LottoResult.js';
 
 class App {
   validateInputMoney(inputMoney) {
@@ -115,6 +116,7 @@ class App {
           this.removeWhiteSpaceAndSplitAnswerNumbers(inputAnswerNumbers);
         this.validateAnswerNumbers(answerNumbers);
 
+        answerNumbers.sort();
         Console.print('');
         break;
       } catch (error) {
@@ -136,6 +138,15 @@ class App {
         Console.print(error.message);
       }
     }
+
+    const gameResult = new LottoResult(
+      lottos,
+      answerNumbers,
+      bonusNumber,
+      Number(inputMoney),
+    );
+    gameResult.calculateWinCount();
+    gameResult.printResult();
   }
 }
 
