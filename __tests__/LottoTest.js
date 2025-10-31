@@ -26,4 +26,15 @@ describe('로또 클래스 테스트', () => {
       new Lotto([-1, 2, 3, 4, 5, 46]);
     }).toThrow('[ERROR]');
   });
+
+  test('올바른 로또가 생성된다.', () => {
+    // given
+    const RANDOM_NUMBERS = [2, 5, 6, 10, 20, 30];
+
+    // when
+    const lotto = new Lotto(RANDOM_NUMBERS);
+
+    // then
+    expect(lotto.getNumbers()).toEqual(RANDOM_NUMBERS);
+  });
 });
