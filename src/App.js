@@ -2,6 +2,7 @@ import { Console, Random } from '@woowacourse/mission-utils';
 import Lotto from './Lotto.js';
 import LottoResult from './LottoResult.js';
 import InputManager from './InputManager.js';
+import LottoUtils from './utils/LottoUtils.js';
 
 class App {
   createLottosWithBoughtCount(boughtCount) {
@@ -13,42 +14,6 @@ class App {
     }
 
     return lottos;
-  }
-
-  removeWhiteSpaceAndSplitAnswerNumbers(answerNumbers) {
-    return answerNumbers.replaceAll(' ', '').split(',');
-  }
-
-  validateAnswerNumbers(answerNumbers) {
-    if (answerNumbers.length !== 6) {
-      throw new Error('[ERROR] 당첨 번호는 6개여야 합니다.');
-    }
-    if (answerNumbers.includes('')) {
-      throw new Error('[ERROR] 당첨 번호에는 빈 값이 존재할 수 없습니다.');
-    }
-
-    answerNumbers.forEach((number) => {
-      if (isNaN(number)) {
-        throw new Error('[ERROR] 당첨 번호에는 숫자가 와야 합니다.');
-      }
-    });
-
-    answerNumbers.forEach((number) => {
-      if (Number(number) < 1 || Number(number) > 45) {
-        throw new Error('[ERROR] 당첨 번호는 1~45사이여야 합니다.');
-      }
-    });
-
-    answerNumbers.forEach((number) => {
-      if (Number(number) % 1 !== 0) {
-        throw new Error('[ERROR] 당첨 번호는 정수만 가능합니다.');
-      }
-    });
-
-    const setAnswerNumbers = new Set(answerNumbers);
-    if (answerNumbers.length !== setAnswerNumbers.size) {
-      throw new Error('[ERROR] 당첨 번호는 중복될 수 없습니다.');
-    }
   }
 
   removeWhiteSpaceBonusNumber(bonusNumber) {
@@ -71,7 +36,7 @@ class App {
       throw new Error('[ERROR] 보너스 번호는 정수만 가능합니다.');
     }
 
-    if (answerNumbers.includes(bonusNumber)) {
+    if (answerNumbers.includes(Number(bonusNumber))) {
       throw new Error('[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.');
     }
   }
@@ -79,31 +44,16 @@ class App {
   async run() {
     const purchaseAmount = await InputManager.inputPurchaseAmountUntilValid();
 
-    const boughtLottoCount = purchaseAmount / 1000;
-    Console.print(`${boughtLottoCount}개를 구매했습니다.`);
+    const purchaseLottoCount = LottoUtils.getPurchaseLottoCount(purchaseAmount);
+    Console.print(`${purchaseLottoCount}개를 구매했습니다.`);
 
-    const lottos = this.createLottosWithBoughtCount(boughtLottoCount);
+    const lottos = this.createLottosWithBoughtCount(purchaseLottoCount);
     lottos.forEach((lotto) => {
       Console.print(`[${lotto.getNumbers().join(', ')}]`);
     });
     Console.print('');
 
-    let answerNumbers;
-    while (true) {
-      try {
-        const inputAnswerNumbers =
-          await Console.readLineAsync('당첨 번호를 입력해 주세요.\n');
-        answerNumbers =
-          this.removeWhiteSpaceAndSplitAnswerNumbers(inputAnswerNumbers);
-        this.validateAnswerNumbers(answerNumbers);
-
-        answerNumbers.sort();
-        Console.print('');
-        break;
-      } catch (error) {
-        Console.print(error.message);
-      }
-    }
+    const answerNumbers = await InputManager.inputAnswerNumbersUntilValid();
 
     let bonusNumber;
     while (true) {
