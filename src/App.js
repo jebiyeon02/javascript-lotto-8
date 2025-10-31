@@ -1,17 +1,9 @@
 import { Console, Random } from '@woowacourse/mission-utils';
 import Lotto from './Lotto.js';
 import LottoResult from './LottoResult.js';
+import InputManager from './InputManager.js';
 
 class App {
-  validateInputMoney(inputMoney) {
-    if (isNaN(inputMoney))
-      throw new Error('[ERROR] 구입 금액에는 숫자가 들어와야 합니다.');
-    if (Number(inputMoney) <= 0)
-      throw new Error('[ERROR] 구입 금액은 양의 정수이어야 합니다.');
-    if (Number(inputMoney) % 1000 !== 0)
-      throw new Error('[ERROR] 구입 금액은 1000으로 나누어 떨어져야 합니다.');
-  }
-
   createLottosWithBoughtCount(boughtCount) {
     const lottos = [];
     for (let i = 0; i < boughtCount; i += 1) {
@@ -85,20 +77,9 @@ class App {
   }
 
   async run() {
-    let inputMoney;
-    while (true) {
-      try {
-        inputMoney = await Console.readLineAsync('구입금액을 입력해 주세요.\n');
-        this.validateInputMoney(inputMoney);
+    const purchaseAmount = await InputManager.inputPurchaseAmountUntilValid();
 
-        Console.print('');
-        break;
-      } catch (error) {
-        Console.print(error.message);
-      }
-    }
-
-    const boughtLottoCount = Number(inputMoney) / 1000;
+    const boughtLottoCount = purchaseAmount / 1000;
     Console.print(`${boughtLottoCount}개를 구매했습니다.`);
 
     const lottos = this.createLottosWithBoughtCount(boughtLottoCount);
@@ -143,7 +124,7 @@ class App {
       lottos,
       answerNumbers,
       bonusNumber,
-      Number(inputMoney),
+      purchaseAmount,
     );
     gameResult.calculateWinCount();
     gameResult.printResult();
