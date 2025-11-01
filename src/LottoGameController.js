@@ -1,3 +1,4 @@
+import { LOTTO_UNIT_PRICE } from './constants/Enum.js';
 import InputManager from './InputManager.js';
 import BonusNumberInputManager from './InputManager/BonusNumberInputManager.js';
 import LottoGame from './LottoGame.js';
@@ -11,7 +12,8 @@ class LottoGameController {
   async play() {
     await this.#initializeGame();
     this.#calculateAllLottoWinCount(this.#lottoGame.getLottos());
-    const purchaseAmount = this.#lottoGame.getLottos().length * 1000;
+    const purchaseAmount =
+      this.#lottoGame.getLottos().length * LOTTO_UNIT_PRICE;
     const winCount = this.#lottoGame.getWinCount();
     const rateOfReturn = LottoUtils.getRateOfReturn(winCount, purchaseAmount);
     LottoOutputView.printLottoResult(
