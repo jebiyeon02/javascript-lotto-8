@@ -1,4 +1,11 @@
 import { Console } from '@woowacourse/mission-utils';
+import MESSAGES from '../constants/Messages.js';
+import ERROR_MESSAGES from '../constants/ErrorMessages.js';
+import {
+  INTEGER_CHECK_NUMBER,
+  LOTTO_MAXIMUM_NUMBER,
+  LOTTO_MINIMUM_NUMBER,
+} from '../constants/Enum.js';
 class BonusNumberInputManager {
   #answerNumbers;
 
@@ -21,8 +28,9 @@ class BonusNumberInputManager {
   }
 
   async #inputBonusNumber() {
-    const inputBonusNumber =
-      await Console.readLineAsync('보너스 번호를 입력해 주세요.\n');
+    const inputBonusNumber = await Console.readLineAsync(
+      MESSAGES.INPUT_BONUS_NUMBER_MESSAGE,
+    );
 
     const bonusNumber = this.#removeWhiteSpaceBonusNumber(inputBonusNumber);
     this.#validateBonusNumber(bonusNumber, this.#answerNumbers);
@@ -35,24 +43,43 @@ class BonusNumberInputManager {
   }
 
   #validateBonusNumber(bonusNumber, answerNumbers) {
+    this.#validateBonusNumberNotIncludeBlank(bonusNumber);
+    this.#validateBonusNumberIsNumber(bonusNumber);
+    this.#validateBonusNumberInRange(bonusNumber);
+    this.#validateBonusNumberIsInteger(bonusNumber);
+    this.#validateBonusNumberNotEqualToAnswerNumber(bonusNumber, answerNumbers);
+  }
+
+  #validateBonusNumberNotIncludeBlank(bonusNumber) {
     if (bonusNumber.includes(' ')) {
-      throw new Error('[ERROR] 보너스 번호에는 빈 값이 존재할 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.BONUS_NUMBER_INCLUDE_BLANK);
     }
+  }
 
+  #validateBonusNumberIsNumber(bonusNumber) {
     if (isNaN(bonusNumber)) {
-      throw new Error('[ERROR] 보너스 번호에는 숫자가 와야 합니다.');
+      throw new Error(ERROR_MESSAGES.BONUS_NUMBER_NOT_NUMBER);
     }
+  }
 
-    if (Number(bonusNumber) < 1 || Number(bonusNumber) > 45) {
-      throw new Error('[ERROR] 보너스 번호는 1~45사이여야 합니다.');
+  #validateBonusNumberInRange(bonusNumber) {
+    if (
+      Number(bonusNumber) < LOTTO_MINIMUM_NUMBER ||
+      Number(bonusNumber) > LOTTO_MAXIMUM_NUMBER
+    ) {
+      throw new Error(ERROR_MESSAGES.BONUS_NUMBER_OVER_RANGE);
     }
+  }
 
-    if (Number(bonusNumber) % 1 !== 0) {
-      throw new Error('[ERROR] 보너스 번호는 정수만 가능합니다.');
+  #validateBonusNumberIsInteger(bonusNumber) {
+    if (Number(bonusNumber) % INTEGER_CHECK_NUMBER !== 0) {
+      throw new Error(ERROR_MESSAGES.BONUS_NUMBER_NOT_INTEGER);
     }
+  }
 
+  #validateBonusNumberNotEqualToAnswerNumber(bonusNumber, answerNumbers) {
     if (answerNumbers.includes(Number(bonusNumber))) {
-      throw new Error('[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.BONUS_NUMBER_EQUAL_ANSWER_NUMBER);
     }
   }
 }
