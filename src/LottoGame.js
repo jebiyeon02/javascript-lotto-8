@@ -16,6 +16,26 @@ class LottoGame {
       fifth: 0,
     };
   }
+
+  addWinCount(lottoRank) {
+    this.#winCount[lottoRank] += 1;
+  }
+
+  getLottos() {
+    return this.#lottos;
+  }
+
+  getAnswerNumbers() {
+    return this.#answerNumbers;
+  }
+
+  getBonusNumber() {
+    return this.#bonusNumber;
+  }
+
+  getWinCount() {
+    return this.#winCount;
+  }
 }
 
 export default LottoGame;
