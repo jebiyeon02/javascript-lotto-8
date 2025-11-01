@@ -1,4 +1,15 @@
 import { Console } from '@woowacourse/mission-utils';
+import MESSAGES from './constants/Messages.js';
+import ERROR_MESSAGES from './constants/ErrorMessages.js';
+import {
+  ANSWER_NUMBER_INPUT_DELIMETER,
+  ANSWER_NUMBER_LENGTH,
+  INTEGER_CHECK_NUMBER,
+  LOTTO_MAXIMUM_NUMBER,
+  LOTTO_MINIMUM_NUMBER,
+  LOTTO_UNIT_PRICE,
+  PURCHASE_AMOUNT_MININUM_NUMBER,
+} from './constants/Enum.js';
 
 class InputManager {
   static async inputPurchaseAmountUntilValid() {
@@ -16,8 +27,9 @@ class InputManager {
   }
 
   static async #inputPurchaseAmount() {
-    const inputPurchaseAmount =
-      await Console.readLineAsync('구입금액을 입력해 주세요.\n');
+    const inputPurchaseAmount = await Console.readLineAsync(
+      MESSAGES.INPUT_PURCHASE_AMOUNT_MESSAGE,
+    );
     InputManager.#validatePurchaseAmount(inputPurchaseAmount);
 
     return Number(inputPurchaseAmount);
@@ -25,11 +37,14 @@ class InputManager {
 
   static #validatePurchaseAmount(inputPurchaseAmount) {
     if (isNaN(inputPurchaseAmount))
-      throw new Error('[ERROR] 구입 금액에는 숫자가 들어와야 합니다.');
-    if (Number(inputPurchaseAmount) <= 0)
-      throw new Error('[ERROR] 구입 금액은 양의 정수이어야 합니다.');
-    if (Number(inputPurchaseAmount) % 1000 !== 0)
-      throw new Error('[ERROR] 구입 금액은 1000으로 나누어 떨어져야 합니다.');
+      throw new Error(ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_NUMBER);
+    if (Number(inputPurchaseAmount) < PURCHASE_AMOUNT_MININUM_NUMBER)
+      throw new Error(ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_POSITIVE_INTEGER);
+    if (Number(inputPurchaseAmount) % LOTTO_UNIT_PRICE !== 0)
+      // A % B === 0은 수학적 정의 이므로 0은 매직 넘버가 아니라고 생각
+      throw new Error(
+        ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_DIVISIBLE_BY_PURCHASE_AMOUNT_UNIT,
+      );
   }
 
   static async inputAnswerNumbersUntilValid() {
@@ -48,8 +63,9 @@ class InputManager {
   }
 
   static async #inputAnswerNumbers() {
-    const inputAnswerNumbers =
-      await Console.readLineAsync('당첨 번호를 입력해 주세요.\n');
+    const inputAnswerNumbers = await Console.readLineAsync(
+      MESSAGES.INPUT_ANSWER_NUMBER_MESSAGE,
+    );
 
     const answerNumbers =
       InputManager.#removeWhiteSpaceAndSplitAnswerNumbers(inputAnswerNumbers);
@@ -59,38 +75,43 @@ class InputManager {
   }
 
   static #removeWhiteSpaceAndSplitAnswerNumbers(answerNumbers) {
-    return answerNumbers.replaceAll(' ', '').split(',');
+    return answerNumbers
+      .replaceAll(' ', '')
+      .split(ANSWER_NUMBER_INPUT_DELIMETER);
   }
 
   static #validateAnswerNumbers(answerNumbers) {
-    if (answerNumbers.length !== 6) {
-      throw new Error('[ERROR] 당첨 번호는 6개여야 합니다.');
+    if (answerNumbers.length !== ANSWER_NUMBER_LENGTH) {
+      throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_LENGTH_NOT_CORRECT);
     }
     if (answerNumbers.includes('')) {
-      throw new Error('[ERROR] 당첨 번호에는 빈 값이 존재할 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_INCLUDE_BLANK);
     }
 
     answerNumbers.forEach((number) => {
       if (isNaN(number)) {
-        throw new Error('[ERROR] 당첨 번호에는 숫자가 와야 합니다.');
+        throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_NOT_NUMBER);
       }
     });
 
     answerNumbers.forEach((number) => {
-      if (Number(number) < 1 || Number(number) > 45) {
-        throw new Error('[ERROR] 당첨 번호는 1~45사이여야 합니다.');
+      if (
+        Number(number) < LOTTO_MINIMUM_NUMBER ||
+        Number(number) > LOTTO_MAXIMUM_NUMBER
+      ) {
+        throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_OVER_RANGE);
       }
     });
 
     answerNumbers.forEach((number) => {
-      if (Number(number) % 1 !== 0) {
-        throw new Error('[ERROR] 당첨 번호는 정수만 가능합니다.');
+      if (Number(number) % INTEGER_CHECK_NUMBER !== 0) {
+        throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_NOT_INTEGER);
       }
     });
 
     const setAnswerNumbers = new Set(answerNumbers);
     if (answerNumbers.length !== setAnswerNumbers.size) {
-      throw new Error('[ERROR] 당첨 번호는 중복될 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_INCLUDE_SAME_NUMBER);
     }
   }
 }
