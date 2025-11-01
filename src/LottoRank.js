@@ -31,10 +31,10 @@ class LottoRank {
     const answerNumberCount = lottoNumbers.filter((lottoNumber) =>
       answerNumbers.includes(lottoNumber),
     ).length;
-    // 보너스 번호가 나중에 2개 3개가 될 수도 있으니 아래처럼 구현
-    const bonusNumberCount = lottoNumbers.filter((lottoNumber) =>
-      new Array(bonusNumber).includes(lottoNumber),
-    );
+
+    const bonusNumberCount = lottoNumbers.filter(
+      (lottoNumber) => lottoNumber === bonusNumber,
+    ).length;
 
     return { answerNumberCount, bonusNumberCount };
   }
