@@ -36,15 +36,34 @@ class InputManager {
   }
 
   static #validatePurchaseAmount(inputPurchaseAmount) {
-    if (isNaN(inputPurchaseAmount))
+    InputManager.#validatePurchaseAmountIsNumber(inputPurchaseAmount);
+    InputManager.#validatePurchaseAmountBiggerThanMinimumAmount(
+      inputPurchaseAmount,
+    );
+    InputManager.#validatePurchaseAmountCanDivideByAmountUnit(
+      inputPurchaseAmount,
+    );
+  }
+
+  static #validatePurchaseAmountIsNumber(inputPurchaseAmount) {
+    if (isNaN(inputPurchaseAmount)) {
       throw new Error(ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_NUMBER);
-    if (Number(inputPurchaseAmount) < PURCHASE_AMOUNT_MININUM_NUMBER)
+    }
+  }
+
+  static #validatePurchaseAmountBiggerThanMinimumAmount(inputPurchaseAmount) {
+    if (Number(inputPurchaseAmount) < PURCHASE_AMOUNT_MININUM_NUMBER) {
       throw new Error(ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_POSITIVE_INTEGER);
-    if (Number(inputPurchaseAmount) % LOTTO_UNIT_PRICE !== 0)
+    }
+  }
+
+  static #validatePurchaseAmountCanDivideByAmountUnit(inputPurchaseAmount) {
+    if (Number(inputPurchaseAmount) % LOTTO_UNIT_PRICE !== 0) {
       // A % B === 0은 수학적 정의 이므로 0은 매직 넘버가 아니라고 생각
       throw new Error(
         ERROR_MESSAGES.PURCHASE_AMOUNT_NOT_DIVISIBLE_BY_PURCHASE_AMOUNT_UNIT,
       );
+    }
   }
 
   static async inputAnswerNumbersUntilValid() {
