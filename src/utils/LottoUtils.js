@@ -1,29 +1,44 @@
 import { Random } from '@woowacourse/mission-utils';
 import Lotto from '../Lotto.js';
+import {
+  LOTTO_MAXIMUM_NUMBER,
+  LOTTO_MINIMUM_NUMBER,
+  LOTTO_NUMBER_LENGTH,
+  LOTTO_UNIT_PRICE,
+  PRIZE_AMOUNT,
+} from '../constants/Enum.js';
 
 class LottoUtils {
   static getPurchaseLottoCount(purchaseAmount) {
-    return purchaseAmount / 1000;
+    return purchaseAmount / LOTTO_UNIT_PRICE;
   }
 
   static createLottosWithPurchaseCount(purchaseCount) {
     const lottos = [];
     for (let i = 0; i < purchaseCount; i += 1) {
-      const lottoNumbers = Random.pickUniqueNumbersInRange(1, 45, 6);
-      lottoNumbers.sort((a, b) => a - b);
+      const lottoNumbers = Random.pickUniqueNumbersInRange(
+        LOTTO_MINIMUM_NUMBER,
+        LOTTO_MAXIMUM_NUMBER,
+        LOTTO_NUMBER_LENGTH,
+      );
+      LottoUtils.sortAscendingOrder(lottoNumbers);
       lottos.push(new Lotto(lottoNumbers));
     }
 
     return lottos;
   }
 
+  static sortAscendingOrder(numbers) {
+    numbers.sort((a, b) => a - b);
+  }
+
   static getRateOfReturn(winCount, purchaseAmount) {
     return (
-      ((5000 * winCount.fifth +
-        50000 * winCount.fourth +
-        1500000 * winCount.third +
-        30000000 * winCount.second +
-        2000000000 * winCount.first) /
+      ((PRIZE_AMOUNT.FIFTH * winCount.fifth +
+        PRIZE_AMOUNT.FOURTH * winCount.fourth +
+        PRIZE_AMOUNT.THIRD * winCount.third +
+        PRIZE_AMOUNT.SECOND * winCount.second +
+        PRIZE_AMOUNT.FIRST * winCount.first) /
         purchaseAmount) *
       100
     );
