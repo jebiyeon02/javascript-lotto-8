@@ -1,3 +1,10 @@
+import {
+  LOTTO_MAXIMUM_NUMBER,
+  LOTTO_MINIMUM_NUMBER,
+  LOTTO_NUMBER_LENGTH,
+} from './constants/Enum';
+import ERROR_MESSAGES from './constants/ErrorMessages';
+
 class Lotto {
   #numbers;
 
@@ -7,19 +14,22 @@ class Lotto {
   }
 
   #validate(numbers) {
-    if (numbers.length !== 6) {
-      throw new Error('[ERROR] 로또 번호는 6개여야 합니다.');
+    if (numbers.length !== LOTTO_NUMBER_LENGTH) {
+      throw new Error(ERROR_MESSAGES.LOTTO_NUMBER_LENGTH_NOT_CORRECT);
     }
 
     numbers.forEach((number) => {
-      if (Number(number) < 1 || Number(number) > 45) {
-        throw new Error('[ERROR] 로또 번호는 1~45사이여야 합니다.');
+      if (
+        Number(number) < LOTTO_MINIMUM_NUMBER ||
+        Number(number) > LOTTO_MAXIMUM_NUMBER
+      ) {
+        throw new Error(ERROR_MESSAGES.LOTTO_NUMBER_OVER_RANGE);
       }
     });
 
     const setNumbers = new Set(numbers);
     if (numbers.length !== setNumbers.size) {
-      throw new Error('[ERROR] 로또 번호는 중복될 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.LOTTO_NUMBER_INCLUDE_SAME_NUMBER);
     }
   }
 
