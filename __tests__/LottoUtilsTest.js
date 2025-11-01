@@ -37,4 +37,15 @@ describe('로또 유틸 테스트', () => {
     // when & then
     expect(LottoUtils.getRateOfReturn(winCount, purchaseAmount)).toBe(40631100);
   });
+
+  test('오름차순 정렬 테스트 ', () => {
+    // given
+    const numbers = [4, 3, 2, 1];
+
+    // when
+    LottoUtils.sortAscendingOrder(numbers);
+
+    // then
+    expect(numbers).toEqual([1, 2, 3, 4]);
+  });
 });
