@@ -100,19 +100,35 @@ class InputManager {
   }
 
   static #validateAnswerNumbers(answerNumbers) {
+    InputManager.#validateAnswerNumbersAreCorrectLength(answerNumbers);
+    InputManager.#validateAnswerNumbersNotIncludeBlank(answerNumbers);
+    InputManager.#validateAnswerNumbersAreNumber(answerNumbers);
+    InputManager.#validateAnswerNumbersInRange(answerNumbers);
+    InputManager.#validateAnswerNumbersAreInteger(answerNumbers);
+    InputManager.#validateAnswerNumbersNotHaveSameNumber(answerNumbers);
+  }
+
+  static #validateAnswerNumbersAreCorrectLength(answerNumbers) {
     if (answerNumbers.length !== ANSWER_NUMBER_LENGTH) {
       throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_LENGTH_NOT_CORRECT);
     }
+  }
+
+  static #validateAnswerNumbersNotIncludeBlank(answerNumbers) {
     if (answerNumbers.includes('')) {
       throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_INCLUDE_BLANK);
     }
+  }
 
+  static #validateAnswerNumbersAreNumber(answerNumbers) {
     answerNumbers.forEach((number) => {
       if (isNaN(number)) {
         throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_NOT_NUMBER);
       }
     });
+  }
 
+  static #validateAnswerNumbersInRange(answerNumbers) {
     answerNumbers.forEach((number) => {
       if (
         Number(number) < LOTTO_MINIMUM_NUMBER ||
@@ -121,13 +137,17 @@ class InputManager {
         throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_OVER_RANGE);
       }
     });
+  }
 
+  static #validateAnswerNumbersAreInteger(answerNumbers) {
     answerNumbers.forEach((number) => {
       if (Number(number) % INTEGER_CHECK_NUMBER !== 0) {
         throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_NOT_INTEGER);
       }
     });
+  }
 
+  static #validateAnswerNumbersNotHaveSameNumber(answerNumbers) {
     const setAnswerNumbers = new Set(answerNumbers);
     if (answerNumbers.length !== setAnswerNumbers.size) {
       throw new Error(ERROR_MESSAGES.ANSWER_NUMBER_INCLUDE_SAME_NUMBER);
