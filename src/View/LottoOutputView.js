@@ -9,6 +9,7 @@ class LottoOutputView {
       Console.print(`[${lotto.getNumbers().join(', ')}]`);
     });
   }
+
   static printLottoResult(winCount, rateOfReturn) {
     Console.print('당첨 통계\n---');
     Console.print(`3개 일치 (5,000원) - ${winCount.fifth}개`);

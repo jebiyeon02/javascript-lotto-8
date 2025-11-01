@@ -1,9 +1,11 @@
 import { Console } from '@woowacourse/mission-utils';
 class BonusNumberInputManager {
   #answerNumbers;
+
   constructor(answerNumbers) {
     this.#answerNumbers = answerNumbers;
   }
+
   async inputBonusNumberUntilValid() {
     let bonusNumber;
     while (true) {
