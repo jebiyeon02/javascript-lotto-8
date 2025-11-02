@@ -1,0 +1,57 @@
+export const INTEGER_CHECK_NUMBER = 1;
+
+export const LOTTO_MINIMUM_NUMBER = 1;
+export const LOTTO_MAXIMUM_NUMBER = 45;
+export const LOTTO_NUMBER_LENGTH = 6;
+export const LOTTO_UNIT_PRICE = 1000;
+
+export const PURCHASE_AMOUNT_MININUM_NUMBER = 1000;
+
+export const ANSWER_NUMBER_LENGTH = 6;
+export const ANSWER_NUMBER_INPUT_DELIMETER = ',';
+
+export const LOTTO_RANK = {
+  FIRST: {
+    PRIZE_AMOUNT: 2000000000,
+    ANSWER_COUNT: 6,
+    STRING: 'first',
+  },
+  SECOND: {
+    PRIZE_AMOUNT: 30000000,
+    ANSWER_COUNT: 5,
+    STRING: 'second',
+  },
+  THIRD: {
+    PRIZE_AMOUNT: 1500000,
+    ANSWER_COUNT: 5,
+    STRING: 'third',
+  },
+  FOURTH: {
+    PRIZE_AMOUNT: 50000,
+    ANSWER_COUNT: 4,
+    STRING: 'fourth',
+  },
+  FIFTH: {
+    PRIZE_AMOUNT: 5000,
+    ANSWER_COUNT: 3,
+    STRING: 'fifth',
+  },
+  NO_WIN: 0,
+};
+
+export const MATCH_CORRECT_COUNT_TO_RANK = {
+  6: LOTTO_RANK.FIRST.STRING,
+  5: LOTTO_RANK.THIRD.STRING,
+  4: LOTTO_RANK.FOURTH.STRING,
+  3: LOTTO_RANK.FIFTH.STRING,
+};
+
+export const INITIAL_WIN_COUNT = {
+  FIRST: 0,
+  SECOND: 0,
+  THIRD: 0,
+  FOURTH: 0,
+  FIFTH: 0,
+};
+
+export const WIN_UNIT_INCREASE = 1;
