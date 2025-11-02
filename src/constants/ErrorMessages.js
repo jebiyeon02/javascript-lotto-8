@@ -5,7 +5,7 @@ import {
   LOTTO_NUMBER_LENGTH,
   LOTTO_UNIT_PRICE,
   PURCHASE_AMOUNT_MININUM_NUMBER,
-} from './Enum';
+} from './Enum.js';
 
 const ERROR_MESSAGES = {
   BONUS_NUMBER_INCLUDE_BLANK:

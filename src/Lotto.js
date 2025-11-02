@@ -2,8 +2,8 @@ import {
   LOTTO_MAXIMUM_NUMBER,
   LOTTO_MINIMUM_NUMBER,
   LOTTO_NUMBER_LENGTH,
-} from './constants/Enum';
-import ERROR_MESSAGES from './constants/ErrorMessages';
+} from './constants/Enum.js';
+import ERROR_MESSAGES from './constants/ErrorMessages.js';
 
 class Lotto {
   #numbers;

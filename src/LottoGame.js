@@ -1,4 +1,4 @@
-import { INITIAL_WIN_COUNT, WIN_UNIT_INCREASE } from './constants/Enum';
+import { INITIAL_WIN_COUNT, WIN_UNIT_INCREASE } from './constants/Enum.js';
 
 class LottoGame {
   #lottos; // 로또 번호 배열이 아닌 로또 객체들
