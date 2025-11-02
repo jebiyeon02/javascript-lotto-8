@@ -1,42 +1,35 @@
+import { LOTTO_RANK, MATCH_CORRECT_COUNT_TO_RANK } from './constants/Enum.js';
+
 class LottoRank {
   static getLottoRank(lottoNumbers, answerNumbers, bonusNumber) {
-    const answerCount = LottoRank.#getAnswerCount(
+    const answerCount = LottoRank.#getAnswerNumberCount(
       lottoNumbers,
       answerNumbers,
-      bonusNumber,
     );
-    if (answerCount.answerNumberCount === 6) {
-      return 'first';
+    const hasBonusNumber = LottoRank.#hasBonusNumber(lottoNumbers, bonusNumber);
+    if (LottoRank.#isSecondPrize(answerCount, hasBonusNumber)) {
+      return LOTTO_RANK.SECOND.STRING;
     }
-    if (answerCount.answerNumberCount === 5) {
-      return LottoRank.#classificationSecondAndThridPrize(
-        answerCount.bonusNumberCount,
-      );
-    }
-    if (answerCount.answerNumberCount === 4) {
-      return 'fourth';
-    }
-    if (answerCount.answerNumberCount === 3) {
-      return 'fifth';
-    }
-    return 0;
+
+    return MATCH_CORRECT_COUNT_TO_RANK[answerCount] || LOTTO_RANK.NO_WIN;
   }
 
-  static #classificationSecondAndThridPrize(bonusNumberCount) {
-    if (bonusNumberCount === 1) return 'second';
-    return 'third';
-  }
-
-  static #getAnswerCount(lottoNumbers, answerNumbers, bonusNumber) {
-    const answerNumberCount = lottoNumbers.filter((lottoNumber) =>
+  static #getAnswerNumberCount(lottoNumbers, answerNumbers) {
+    return lottoNumbers.filter((lottoNumber) =>
       answerNumbers.includes(lottoNumber),
     ).length;
+  }
 
-    const bonusNumberCount = lottoNumbers.filter(
-      (lottoNumber) => lottoNumber === bonusNumber,
-    ).length;
+  static #hasBonusNumber(lottoNumbers, bonusNumber) {
+    return lottoNumbers.includes(bonusNumber);
+  }
 
-    return { answerNumberCount, bonusNumberCount };
+  static #isSecondPrize(answerCount, hasBonusNumber) {
+    if (answerCount === LOTTO_RANK.SECOND.ANSWER_COUNT && hasBonusNumber) {
+      return true;
+    }
+
+    return false;
   }
 }
 
