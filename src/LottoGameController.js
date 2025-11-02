@@ -1,5 +1,5 @@
 import { LOTTO_UNIT_PRICE } from './constants/Enum.js';
-import InputManager from './InputManager.js';
+import InputManager from './InputManager/InputManager.js';
 import BonusNumberInputManager from './InputManager/BonusNumberInputManager.js';
 import LottoGame from './LottoGame.js';
 import LottoRank from './LottoRank.js';
