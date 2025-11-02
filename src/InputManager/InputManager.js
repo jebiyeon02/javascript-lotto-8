@@ -1,6 +1,6 @@
 import { Console } from '@woowacourse/mission-utils';
-import MESSAGES from './constants/Messages.js';
-import ERROR_MESSAGES from './constants/ErrorMessages.js';
+import MESSAGES from '../constants/Messages.js';
+import ERROR_MESSAGES from '../constants/ErrorMessages.js';
 import {
   ANSWER_NUMBER_INPUT_DELIMETER,
   ANSWER_NUMBER_LENGTH,
@@ -9,7 +9,7 @@ import {
   LOTTO_MINIMUM_NUMBER,
   LOTTO_UNIT_PRICE,
   PURCHASE_AMOUNT_MININUM_NUMBER,
-} from './constants/Enum.js';
+} from '../constants/Enum.js';
 
 class InputManager {
   static async inputPurchaseAmountUntilValid() {
