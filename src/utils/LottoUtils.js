@@ -4,8 +4,8 @@ import {
   LOTTO_MAXIMUM_NUMBER,
   LOTTO_MINIMUM_NUMBER,
   LOTTO_NUMBER_LENGTH,
+  LOTTO_RANK,
   LOTTO_UNIT_PRICE,
-  PRIZE_AMOUNT,
 } from '../constants/Enum.js';
 
 class LottoUtils {
@@ -34,11 +34,11 @@ class LottoUtils {
 
   static getRateOfReturn(winCount, purchaseAmount) {
     return (
-      ((PRIZE_AMOUNT.FIFTH * winCount.fifth +
-        PRIZE_AMOUNT.FOURTH * winCount.fourth +
-        PRIZE_AMOUNT.THIRD * winCount.third +
-        PRIZE_AMOUNT.SECOND * winCount.second +
-        PRIZE_AMOUNT.FIRST * winCount.first) /
+      ((LOTTO_RANK.FIFTH.PRIZE_AMOUNT * winCount.fifth +
+        LOTTO_RANK.FOURTH.PRIZE_AMOUNT * winCount.fourth +
+        LOTTO_RANK.THIRD.PRIZE_AMOUNT * winCount.third +
+        LOTTO_RANK.SECOND.PRIZE_AMOUNT * winCount.second +
+        LOTTO_RANK.FIRST.PRIZE_AMOUNT * winCount.first) /
         purchaseAmount) *
       100
     );
